@@ -14,7 +14,8 @@ commands:
           command: |
             echo "id: <<parameters.id>>"
             id1=$(echo "<<parameters.id>>")
-            echo $id1
+            id2=$(echo $id1 | cut -c1-8)
+            echo $id2
 #            echo "shortid: ${shortid}"
 #            aws cloudformation delete-stack --stack-name "udapeople-backend-<<parameters.id>>" \
 #            aws cloudformation delete-stack --stack-name "udapeople-frontend-<<parameters.id>>" \
