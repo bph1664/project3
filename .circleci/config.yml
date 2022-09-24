@@ -13,8 +13,8 @@ commands:
 #          when: on_fail
           command: |
             echo "id: <<parameters.id>>"
-            $shortid=<<parameters.id>>
-            $shortid=$(echo "${$shortid:0:7}")
+            id1="<<parameters.id>>"
+            shortid=$(echo "${$id1:0:7}")
             echo "shortid: ${shortid}"
 #            aws cloudformation delete-stack --stack-name "udapeople-backend-<<parameters.id>>" \
 #            aws cloudformation delete-stack --stack-name "udapeople-frontend-<<parameters.id>>" \
