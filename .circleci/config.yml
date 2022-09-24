@@ -5,21 +5,18 @@ commands:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
       id:
-#        default: ${CIRCLE_WORKFLOW_ID:0:7}
         type: string
     steps:
       - run:
           name: Destroy environments
-#          when: on_fail
+          when: on_fail
           command: |
-            echo "id: <<parameters.id>>"
-            id1=$(echo "<<parameters.id>>")
-            id2=$(echo $id1 | cut -c1-7)
             shortid=$(echo "<<parameters.id>>" | cut -c1-7)
             echo "my shortid ${shortid}"
-#            echo "shortid: ${shortid}"
-#            aws cloudformation delete-stack --stack-name "udapeople-backend-<<parameters.id>>" \
-#            aws cloudformation delete-stack --stack-name "udapeople-frontend-<<parameters.id>>" \
+            echo "deleting udapeople-backend-${shortid}"
+            aws cloudformation delete-stack --stack-name "udapeople-backend-${shortid}"
+            echo "deleting udapeople-frontend-${shortid}"
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${shortid}"
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -143,16 +140,6 @@ jobs:
             npm audit fix --force
             # If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
             npm audit --audit-level=critical
-
-  test:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - destroy-environment:
-          id: $CIRCLE_WORKFLOW_ID
-
-
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -325,7 +312,6 @@ jobs:
 workflows:
   default:
     jobs:
-      - test
       # - build-frontend
       # - build-backend
       # - test-frontend:
@@ -340,13 +326,13 @@ workflows:
       # - scan-frontend:
       #     requires: 
       #       - build-frontend
-#      - deploy-infrastructure:
-#          requires: 
-#            - build-frontend
-#            - build-backend
-#          filters:
-#            branches:
-#              only: master
+     - deploy-infrastructure:
+         requires: 
+           - build-frontend
+           - build-backend
+         filters:
+           branches:
+             only: master
 
 
       # - configure-infrastructure:
