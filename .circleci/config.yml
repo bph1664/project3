@@ -144,8 +144,12 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - run:
+          name: test
+          command: |
+            echo 'export ID="$CIRCLE_WORKFLOW_ID"' >> "$BASH_ENV"
       - destroy-environment:
-          id: $CIRCLE_WORKFLOW_ID
+          id: $ID
 
 
   deploy-infrastructure:
