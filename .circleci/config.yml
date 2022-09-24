@@ -165,15 +165,13 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             aws ec2 describe-instances --filters Name=tag:"Name",Values="backend-${CIRCLE_WORKFLOW_ID:0:7}" --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text>>.circleci/ansible/inventory.txt
+            yum install -y tar gzip
       - persist_to_workspace:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure
       - destroy-environment:
-          id: "${CIRCLE_WORKFLOW_ID:0:7}"
-
-
 
 #   configure-infrastructure:
 #     docker:
@@ -326,8 +324,8 @@ workflows:
       #       - build-frontend
       - deploy-infrastructure:
           requires: 
-            - build-frontend
-            - build-backend
+#            - build-frontend
+#            - build-backend
           filters:
             branches:
               only: master
