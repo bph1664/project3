@@ -78,7 +78,7 @@ jobs:
           keys: 
             - frontend-build-{{ .BuildNum }}
       - run:
-          name: Front-end test
+          name: Run frontend test
           command: |
             cd frontend
             npm install
@@ -93,7 +93,7 @@ jobs:
           keys: 
             - backend-build-{{ .BuildNum }}
       - run:
-          name: Back-end test
+          name: Run backend test
           command: |
             cd backend
             npm install
