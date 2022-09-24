@@ -38,8 +38,6 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [frontend-build]
       - run:
           name: Build front-end
           command: |
@@ -47,8 +45,9 @@ jobs:
             npm install
             npm run build
       - save_cache:
-          paths: [frontend/node_modules]
-          key: frontend-build
+          paths: 
+            - frontend/node_modules
+          key: frontend-build-{{ $CIRCLE_BUILD_NUM }}
 
   build-backend:
     docker:
@@ -60,7 +59,7 @@ jobs:
       - run:
           name: Back-end build
           command: |
-            cd frontend
+            cd backend
             npm install
             npm run build
       - save_cache:
