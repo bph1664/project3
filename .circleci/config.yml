@@ -173,6 +173,7 @@ jobs:
       # Here's where you will add some code to rollback on failure
       - destroy-environment:
 
+
 #   configure-infrastructure:
 #     docker:
 #       # Docker image here that supports Ansible
@@ -323,12 +324,12 @@ workflows:
       #     requires: 
       #       - build-frontend
       - deploy-infrastructure:
-          requires: 
-#            - build-frontend
-#            - build-backend
-          filters:
-            branches:
-              only: master
+          # requires: 
+          #   - build-frontend
+          #   - build-backend
+          # filters:
+          #   branches:
+          #     only: master
 
 
       # - configure-infrastructure:
