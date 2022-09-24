@@ -324,7 +324,7 @@ workflows:
       #     requires: 
       #       - build-frontend
       - deploy-infrastructure:
-          requires: 
+#          requires: 
 #            - build-frontend
 #            - build-backend
           filters:
