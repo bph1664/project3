@@ -32,9 +32,9 @@ commands:
           command: |
             shortid=$(echo "<<parameters.id>>" | cut -c1-7)
             echo "my shortid ${shortid}"
-            echo "my key << key >>"
+            echo "my key <<parameters.key>>"
             # Example: kvdb.io
-            SUCCESS=$(curl --insecure  "https://kvdb.io/<< key >>/$shortid")
+            SUCCESS=$(curl --insecure  "https://kvdb.io/<<parameters.key>>/$shortid")
             # Logic for reverting the database state
             if (( $SUCCESS == 1 ));
             then
