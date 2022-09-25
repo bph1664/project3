@@ -21,8 +21,6 @@ commands:
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
-      key:
-        type: string
       id:
         type: string
     steps:
@@ -31,10 +29,12 @@ commands:
           when: on_fail
           command: |
             shortid=$(echo "<<parameters.id>>" | cut -c1-7)
+            $key=${cat key.txt}
             echo "my shortid ${shortid}"
-            echo "my key <<parameters.key>>"
+            echo "my key ${key}"
             # Example: kvdb.io
-            SUCCESS=$(curl --insecure  "https://kvdb.io/<<parameters.key>>/$shortid")
+            SUCCESS=$(curl --insecure  "https://kvdb.io/${key}/${shortid}")
+            echo "SUCCESS ${SUCCESS}"
             # Logic for reverting the database state
             if (( $SUCCESS == 1 ));
             then
@@ -231,6 +231,7 @@ jobs:
           name: Send migration results to memstash
           command: |
             key=$(curl -d 'email=bph1664@outlook.com' https://kvdb.io)
+            echo $key>key.txt
             if grep -Fxq "No migrations are pending" output.txt
             then
               curl "https://kvdb.io/${key}/migration_${CIRCLE_WORKFLOW_ID:0:7}" -d "0"
@@ -239,7 +240,6 @@ jobs:
             fi
      # Here's where you will add some code to rollback on failure      
       - revert-migrations:
-          key: "${key}"
           id: $CIRCLE_WORKFLOW_ID
 
   deploy-frontend:
@@ -339,6 +339,7 @@ jobs:
             URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"            
             echo ${URL} 
             export key=$(curl -d 'email=bph1664@outlook.com' https://kvdb.io)
+            echo $key>key.txt
             if curl -s ${URL} | grep "Welcome"
             then
               # Change this to 0 after the job fails
@@ -349,7 +350,6 @@ jobs:
               exit 1
             fi
       - revert-migrations:
-          key: "${key}"
           id: $CIRCLE_WORKFLOW_ID
 
       # Here's where you will add some code to rollback on failure  
