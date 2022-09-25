@@ -33,7 +33,7 @@ commands:
             echo "my shortid ${shortid}"
             echo "my key ${key}"
             # Example: kvdb.io
-            SUCCESS=$(curl --insecure  "https://kvdb.io/${key}/${shortid}")
+            SUCCESS=$(curl --insecure  "https://kvdb.io/${key}/migration_${shortid}")
             echo "SUCCESS ${SUCCESS}"
             # Logic for reverting the database state
             if (( $SUCCESS == 1 ));
