@@ -208,86 +208,86 @@ jobs:
             echo "3.86.238.65">>./inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
 
-#       # Here's where you will add some code to rollback on failure      
+       # Here's where you will add some code to rollback on failure      
       - destroy-environment:
           id: "${CIRCLE_WORKFLOW_ID:0:7}"
-  run-migrations:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - run:
-          name: Run migrations
-          command: |
-            cd backend
-            npm install
-            npm run migrations | tee output.txt
-      # looks like memstash is no longer around.  I cannot get to https://www.memstash.io/
-      # - run:
-      #     name: Send migration results to memstash
-      #     command: |
-      #       migrations# Your code here
-      #       exit 1
-     # Here's where you will add some code to rollback on failure      
-      - revert-migrations:
+#   run-migrations:
+#     docker:
+#       - image: circleci/node:13.8.0
+#     steps:
+#       - checkout
+#       - run:
+#           name: Run migrations
+#           command: |
+#             cd backend
+#             npm install
+#             npm run migrations | tee output.txt
+#       # looks like memstash is no longer around.  I cannot get to https://www.memstash.io/
+#       # - run:
+#       #     name: Send migration results to memstash
+#       #     command: |
+#       #       migrations# Your code here
+#       #       exit 1
+#      # Here's where you will add some code to rollback on failure      
+#       - revert-migrations:
 
-  deploy-frontend:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            # your code here
-      - run:
-          name: Get backend url
-          command: |
-            # your code here
-            export BACKEND_IP=aws ec2 describe-instances --filters Name=tag:"Name",Values="backend-${CIRCLE_WORKFLOW_ID:0:7}" --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
-      - run:
-          name: Deploy frontend objects
-          command: |
-            cd backend
-            npm run build
-            aws s3 sync . s3://udapeople-fxt2hmmtn6z
-      - destroy-environment:
-          id: "${CIRCLE_WORKFLOW_ID:0:7}"
+#   deploy-frontend:
+#     docker:
+#       - image: amazon/aws-cli
+#     steps:
+#       - checkout
+#       - run:
+#           name: Install dependencies
+#           command: |
+#             # your code here
+#       - run:
+#           name: Get backend url
+#           command: |
+#             # your code here
+#             export BACKEND_IP=aws ec2 describe-instances --filters Name=tag:"Name",Values="backend-${CIRCLE_WORKFLOW_ID:0:7}" --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text
+#             export API_URL="http://${BACKEND_IP}:3030"
+#             echo "${API_URL}"
+#       - run:
+#           name: Deploy frontend objects
+#           command: |
+#             cd backend
+#             npm run build
+#             aws s3 sync . s3://udapeople-fxt2hmmtn6z
+#       - destroy-environment:
+#           id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
-#       # Here's where you will add some code to rollback on failure      
+# #       # Here's where you will add some code to rollback on failure      
                     
-  deploy-backend:
-    docker:
-      - image: python:3.7-alpine3.11
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints: ["7b:76:bf:a1:83:68:e3:ac:e3:af:f6:27:28:96:69:90"]
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update ansible 
-      - run:
-          name: Deploy backend
-          environment:
-            - TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}"
-            - TYPEORM_ENTITIES: "{{ lookup('env', 'TYPEORM_ENTITIES')}}"
-            - TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST')}}"
-            - TYPEORM_PORT: 5432
-            - TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME')}}"
-            - TYPEORM_PASSWORD: "{{ lookup('env', 'TYPEORM_PASSWORD')}}"
-            - TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE')}}"
-            - TYPEORM_MIGRATIONS: "{{ lookup('env', 'TYPEORM_MIGRATIONS')}}"
-            - TYPEORM_MIGRATIONS_DIR: "{{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}"          
-          command: |
-            cd .circleci/ansible
-            echo "[web]">./inventory.txt
-            echo "3.86.238.65">>./inventory.txt
-            ansible-playbook -i inventory.txt deploy-backend.yml
+#   deploy-backend:
+#     docker:
+#       - image: python:3.7-alpine3.11
+#     steps:
+#       - checkout
+#       - add_ssh_keys:
+#           fingerprints: ["7b:76:bf:a1:83:68:e3:ac:e3:af:f6:27:28:96:69:90"]
+#       - attach_workspace:
+#           at: ~/
+#       - run:
+#           name: Install dependencies
+#           command: |
+#             apk add --update ansible 
+#       - run:
+#           name: Deploy backend
+#           environment:
+#             - TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}"
+#             - TYPEORM_ENTITIES: "{{ lookup('env', 'TYPEORM_ENTITIES')}}"
+#             - TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST')}}"
+#             - TYPEORM_PORT: 5432
+#             - TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME')}}"
+#             - TYPEORM_PASSWORD: "{{ lookup('env', 'TYPEORM_PASSWORD')}}"
+#             - TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE')}}"
+#             - TYPEORM_MIGRATIONS: "{{ lookup('env', 'TYPEORM_MIGRATIONS')}}"
+#             - TYPEORM_MIGRATIONS_DIR: "{{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}"          
+#           command: |
+#             cd .circleci/ansible
+#             echo "[web]">./inventory.txt
+#             echo "3.86.238.65">>./inventory.txt
+#             ansible-playbook -i inventory.txt deploy-backend.yml
 
 #   smoke-test:
 #     docker:
