@@ -256,6 +256,7 @@ jobs:
           name: Deploy frontend objects
           command: |
             cd backend
+            npm install
             npm run build
             aws s3 sync . s3://udapeople-a6d64d9
       - destroy-environment:
