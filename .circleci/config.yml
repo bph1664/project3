@@ -242,7 +242,7 @@ jobs:
           name: Install dependencies
           command: |
             cat /etc/os*
-            sudo yum install nodejs npm
+            yum install nodejs npm
             apt install nodejs
       - run:
           name: Get backend url
