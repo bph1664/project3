@@ -21,6 +21,8 @@ commands:
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
+      key:
+        type: string
       id:
         type: string
     steps:
@@ -28,16 +30,17 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            ls
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            # SUCCESS = 1
-            # if(( $SUCCESS==1 )); 
-            # then
-            #   cd ~/project/backend
-            #   npm install
-            #   npm run migrations:revert
-            # fi
-            
+            shortid=$(echo "<<parameters.id>>" | cut -c1-7)
+            echo "my shortid ${shortid}"
+            # Example: kvdb.io
+            SUCCESS=$(curl --insecure  "https://kvdb.io/${key}/$shortid")
+            # Logic for reverting the database state
+            if (( $SUCCESS == 1 ));
+            then
+                cd ~/project/backend
+                npm install
+                npm run migration:revert
+            fi                        
 jobs:
   build-frontend:
     docker:
@@ -229,13 +232,14 @@ jobs:
             key=$(curl -d 'email=bph1664@outlook.com' https://kvdb.io)
             if grep -Fxq "No migrations are pending" output.txt
             then
-              curl "https://kvdb.io/${key}" -d "\{migration_${CIRCLE_WORKFLOW_ID:0:7}:0\}"
+              curl "https://kvdb.io/${key}/migration_${CIRCLE_WORKFLOW_ID:0:7}" -d "0"
             else
-              curl "https://kvdb.io/${key}" -d "\{migration_${CIRCLE_WORKFLOW_ID:0:7}:1\}"
+              curl "https://kvdb.io/${key}/migration_${CIRCLE_WORKFLOW_ID:0:7}" -d "1"
             fi
      # Here's where you will add some code to rollback on failure      
       - revert-migrations:
-          id: "${CIRCLE_WORKFLOW_ID:0:7}"
+          key: "${key}"
+          id: $CIRCLE_WORKFLOW_ID
 
   deploy-frontend:
     docker:
@@ -339,6 +343,10 @@ jobs:
             else
               return 1
             fi
+      - revert-migrations:
+          key: "${key}"
+          id: $CIRCLE_WORKFLOW_ID
+
       # Here's where you will add some code to rollback on failure  
 
 #   cloudfront-update:
