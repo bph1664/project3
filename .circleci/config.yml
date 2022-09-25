@@ -33,7 +33,7 @@ commands:
             echo "my shortid ${shortid}"
             echo "my key ${key}"
             # Example: kvdb.io
-            SUCCESS=$(curl --insecure  "https://kvdb.io/${key}/migration_ ${shortid}")
+            SUCCESS=$(curl -k  "https://kvdb.io/${key}/migration_${shortid}")
             echo "SUCCESS ${SUCCESS}"
             # Logic for reverting the database state
             if (( $SUCCESS == 1 ));
@@ -338,15 +338,15 @@ jobs:
           command: |
             URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"            
             echo ${URL} 
-            export key=$(curl -d 'email=bph1664@outlook.com' https://kvdb.io)
+            export key=$(curl -k -d 'email=bph1664@outlook.com' https://kvdb.io)
             echo $key>key.txt
             if curl -s ${URL} | grep "Welcome"
             then
               # Change this to 0 after the job fails
-              curl "https://kvdb.io/${key}/migration_${CIRCLE_WORKFLOW_ID:0:7}" -d "1"            
+              curl -k "https://kvdb.io/${key}/migration_${CIRCLE_WORKFLOW_ID:0:7}" -d "1"            
               exit 1
             else
-              curl "https://kvdb.io/${key}/migration_${CIRCLE_WORKFLOW_ID:0:7}" -d "1"
+              curl -k "https://kvdb.io/${key}/migration_${CIRCLE_WORKFLOW_ID:0:7}" -d "1"
               exit 1
             fi
       - revert-migrations:
