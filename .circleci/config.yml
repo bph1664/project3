@@ -242,7 +242,7 @@ jobs:
           name: Install dependencies
           command: |
             cat /etc/os*
-            curl -sL https://deb.nodesource.com/setup_12.x | bash -
+            sudo yum install nodejs npm
             apt install nodejs
       - run:
           name: Get backend url
