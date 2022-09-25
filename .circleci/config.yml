@@ -242,9 +242,11 @@ jobs:
           name: Install dependencies
           command: |
             cat /etc/os*
-            yum update
-            yum upgrade
-            yum install nodejs npm
+            # curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash
+            # curl -sL https://deb.nodesource.com/setup_12.x | bash -
+            curl -sL https://rpm.nodesource.com/setup_16.x | bash -
+            yum install nodejs --enablerepo=nodesource
+            
       - run:
           name: Get backend url
           command: |
