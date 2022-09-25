@@ -29,7 +29,7 @@ commands:
           when: on_fail
           command: |
             shortid=$(echo "<<parameters.id>>" | cut -c1-7)
-            key=${cat key.txt}
+            key=$(cat key.txt)
             echo "my shortid ${shortid}"
             echo "my key ${key}"
             # Example: kvdb.io
