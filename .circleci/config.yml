@@ -27,6 +27,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
+            ls
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             # SUCCESS = 1
             # if(( $SUCCESS==1 )); 
@@ -363,21 +364,26 @@ workflows:
       # - scan-frontend:
       #     requires: 
       #       - build-frontend
-      - deploy-infrastructure:
-         requires: 
-           - build-frontend
-           - build-backend
-         filters:
-           branches:
-             only: master
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations]
+      # - deploy-infrastructure:
+      #    requires: 
+      #      - build-frontend
+      #      - build-backend
+      #    filters:
+      #      branches:
+      #        only: master
+
+
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
+      # - deploy-frontend:
+      #     requires: [run-migrations]
+      # - deploy-backend:
+      #     requires: [run-migrations]
+
+
+
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
