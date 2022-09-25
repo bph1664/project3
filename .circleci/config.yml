@@ -202,7 +202,6 @@ jobs:
             - TYPEORM_MIGRATIONS: "{{ lookup('env', 'TYPEORM_MIGRATIONS')}}"
             - TYPEORM_MIGRATIONS_DIR: "{{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}"          
           command: |
-# >>>>>>>>>>>>> don't forget to delete 2 lines below  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             cd .circleci/ansible
             echo "[web]">./inventory.txt
             echo "3.86.238.65">>./inventory.txt
@@ -285,7 +284,6 @@ jobs:
             - TYPEORM_MIGRATIONS_DIR: "{{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}"          
           command: |
             cd .circleci/ansible
-# >>>>>>>>>>>>> don't forget to delete 2 lines below  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<            
             echo "[web]">./inventory.txt
             echo "3.86.238.65">>./inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
