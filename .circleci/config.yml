@@ -242,6 +242,8 @@ jobs:
           name: Install dependencies
           command: |
             cat /etc/os*
+            yum update
+            yum upgrade
             yum install nodejs npm
             apt install nodejs
       - run:
