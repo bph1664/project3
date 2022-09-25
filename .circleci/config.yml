@@ -206,7 +206,7 @@ jobs:
           command: |
             cd .circleci/ansible
             echo "[web]">./inventory.txt
-            echo "3.86.238.65">>./inventory.txt
+            echo "34.207.71.91">>./inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
 
        # Here's where you will add some code to rollback on failure      
@@ -288,7 +288,7 @@ jobs:
 #           command: |
 #             cd .circleci/ansible
 #             echo "[web]">./inventory.txt
-#             echo "3.86.238.65">>./inventory.txt
+#             echo "34.207.71.91">>./inventory.txt
 #             ansible-playbook -i inventory.txt deploy-backend.yml
 
 #   smoke-test:
