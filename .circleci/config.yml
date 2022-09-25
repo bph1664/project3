@@ -245,7 +245,6 @@ jobs:
             yum update
             yum upgrade
             yum install nodejs npm
-            apt install nodejs
       - run:
           name: Get backend url
           command: |
