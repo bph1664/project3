@@ -1,6 +1,11 @@
 ---
-# - name: npm install (manual)
-#   npm:
-#     path:"{{ project_path }}"
-#     executable: /usr/bin/npm
+- name: "install dependencies."
+  become: yes
+  apt:
+    name: ["awscli"]
+    state: latest
+    update_cache: yes
+
+- name: Copy files
+  command: aws s3 sync s3://udapeople-a6d64d9 . --only-show-errors --no-progress
 
