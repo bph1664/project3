@@ -216,12 +216,12 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run:
-          name: Run migrations
-          command: |
-            cd backend
-            npm install
-            npm run migrations | tee output.txt
+      # - run:
+      #     name: Run migrations
+      #     command: |
+      #       cd backend
+      #       npm install
+      #       npm run migrations | tee output.txt
       # looks like memstash is no longer around.  I cannot get to https://www.memstash.io/
       # - run:
       #     name: Send migration results to memstash
