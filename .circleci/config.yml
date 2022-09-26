@@ -298,6 +298,8 @@ jobs:
             - AWS_DEFAULT_REGION: "{{ lookup('env', 'AWS_DEFAULT_REGION')}}"    
           command: |
             cd .circleci/ansible
+            echo "Default region ${AWS_DEFAULT_REGION}"
+            ecoh "Access Key ${AWS_ACCESS_KEY}"
             echo "[web]">./inventory.txt
             echo "184.72.181.253">>./inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
