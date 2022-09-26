@@ -5,7 +5,7 @@
     name: ["awscli"]
     state: latest
     update_cache: yes
-
 - name: Copy files
-  command: aws s3 sync s3://udapeople-a6d64d9 . --only-show-errors --no-progress
-
+  command: aws s3 cp s3://udapeople-a6d64d9/dist /home/ubuntu/dist --recursive
+- name: Start pm2
+  command: pm2 start /home/ubuntu/dist/main.js
