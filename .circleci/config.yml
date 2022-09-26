@@ -228,13 +228,13 @@ jobs:
       - run:
           name: Send migration results to memstash
           command: |
-            key=$(curl -d 'email=bph1664@outlook.com' https://kvdb.io)
+            key=$(curl -k -d 'email=bph1664@outlook.com' https://kvdb.io)
             echo $key>key.txt
             if grep -Fxq "No migrations are pending" output.txt
             then
-              curl "https://kvdb.io/${key}/migration_${CIRCLE_WORKFLOW_ID:0:7}" -d "0"
+              curl -k "https://kvdb.io/${key}/migration_${CIRCLE_WORKFLOW_ID:0:7}" -d "0"
             else
-              curl "https://kvdb.io/${key}/migration_${CIRCLE_WORKFLOW_ID:0:7}" -d "1"
+              curl -k "https://kvdb.io/${key}/migration_${CIRCLE_WORKFLOW_ID:0:7}" -d "1"
             fi
      # Here's where you will add some code to rollback on failure      
       - revert-migrations:
@@ -248,7 +248,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            curl -sL https://rpm.nodesource.com/setup_13.x | bash -
+            curl -k -sL https://rpm.nodesource.com/setup_13.x | bash -
             yum install -y nodejs --enablerepo=nodesource
             
       - run:
