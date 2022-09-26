@@ -297,6 +297,8 @@ jobs:
             - AWS_SECRET_ACCESS_KEY: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY')}}"    
           command: |
             cd .circleci/ansible
+            echo "[web]">./inventory.txt
+            echo "184.72.181.253">>./inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
 
   smoke-test:
